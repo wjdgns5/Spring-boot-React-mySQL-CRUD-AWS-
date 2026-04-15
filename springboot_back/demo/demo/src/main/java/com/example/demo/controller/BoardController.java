@@ -27,6 +27,11 @@ public class BoardController {
         return ResponseEntity.ok(boardService.getBoard(id));
     }
 
+    @GetMapping("/search")
+    public ResponseEntity<List<BoardResponseDTO>> searchBoards(@RequestParam String keyword) {
+        return ResponseEntity.ok(boardService.searchBoards(keyword));
+    }
+
     @PostMapping
     public ResponseEntity<BoardResponseDTO> createBoard(
             @RequestBody BoardRequestDTO request,
@@ -56,8 +61,16 @@ public class BoardController {
         return ResponseEntity.ok("삭제 완료");
     }
 
-    @GetMapping("/search")
-    public ResponseEntity<List<BoardResponseDTO>> searchBoards(@RequestParam String keyword) {
-        return ResponseEntity.ok(boardService.searchBoards(keyword));
+    // ------------- join -fetch 테스트용 -------------
+
+    @GetMapping("/test/no-fetch")
+    public ResponseEntity<List<BoardResponseDTO>> testNoFetch() {
+        return ResponseEntity.ok(boardService.getBoardsWithoutFetchJoin());
     }
+
+    @GetMapping("/test/fetch")
+    public ResponseEntity<List<BoardResponseDTO>> testFetch() {
+        return ResponseEntity.ok(boardService.getBoardsWithFetchJoin());
+    }
+
 }

@@ -37,6 +37,8 @@ public class SecurityConfig {
                         .requestMatchers("/api/private/**").hasAnyRole("USER","ADMIN")
                         // hasAnyRole : 사용자가 지정된 권한(Role) 중 하나라도 가지고 있으면 접근을 허용하는 메소드
 
+                        // 비회원: 조회만
+                        // 회원: 작성/수정/삭제 가능
                         .requestMatchers(HttpMethod.GET, "/api/boards/**").permitAll()
                         .requestMatchers(HttpMethod.POST, "/api/boards/**").authenticated()
                         .requestMatchers(HttpMethod.PUT, "/api/boards/**").authenticated()

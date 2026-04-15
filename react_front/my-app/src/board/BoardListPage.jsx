@@ -8,6 +8,10 @@ function BoardListPage() {
   const [keyword, setKeyword] = useState("");
   const { isAuthenticated } = useSelector((state) => state.user);
 
+  // --- join fetch 테스트용 ---------
+  const [mode, setMode] = useState("fetch");
+  // ---------------------------------
+
   useEffect(() => {
     getBoards();
   }, []);
@@ -37,6 +41,28 @@ function BoardListPage() {
     }
   };
 
+  // ------------- join fetch 테스트 -----------
+  const getBoardsWithFetch = async () => {
+    try {
+      const res = await axiosInstance.get("/api/boards/test/fetch");
+      setBoards(res.data);
+      setMode("fetch");
+    } catch (error) {
+      console.error("fetch join 있음 조회 실패:", error);
+    }
+  };
+
+  const getBoardsWithoutFetch = async () => {
+    try {
+      const res = await axiosInstance.get("/api/boards/test/no-fetch");
+      setBoards(res.data);
+      setMode("no-fetch");
+    } catch (error) {
+      console.error("fetch join 없음 조회 실패:", error);
+    }
+  };
+  // ------------- -----------
+
   return (
     <div>
       <h2>게시글 목록</h2>
@@ -50,6 +76,12 @@ function BoardListPage() {
         />
         <button onClick={handleSearch}>검색</button>
         <button onClick={getBoards}>전체보기</button>
+      </div>
+
+      {/* fetch-join test 버튼 */}
+      <div style={{ marginBottom: "15px" }}>
+        <button onClick={getBoardsWithoutFetch}>fetch join 없음</button>
+        <button onClick={getBoardsWithFetch}>fetch join 있음</button>
       </div>
 
       {isAuthenticated && <Link to="/boards/write">글쓰기</Link>}
